@@ -36,18 +36,21 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        h1 {
+        h1, h2, h3 {
             color: #2575fc;
             text-align: center;
             margin-bottom: 1.5rem;
-            font-size: 2rem;
         }
+        h1 { font-size: 2rem; }
+        h2 { font-size: 1.5rem; margin-top: 1rem;}
+        h3 { font-size: 1.2rem; text-align: left; }
+
 
         .form-group {
             margin-bottom: 1.2rem;
         }
 
-        input, textarea, select { /* Added select here */
+        input, textarea, select {
             width: 100%;
             padding: 12px;
             border: 2px solid #e1e1e1;
@@ -56,7 +59,7 @@
             transition: all 0.3s ease;
         }
 
-        input:focus, textarea:focus, select:focus { /* Added select here */
+        input:focus, textarea:focus, select:focus {
             border-color: #2575fc;
             outline: none;
             box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.1);
@@ -84,13 +87,12 @@
             box-shadow: 0 5px 15px rgba(37, 117, 252, 0.2);
         }
         
-        .action-btn { /* Specific class for smaller action buttons */
+        .action-btn {
             width: auto;
             padding: 8px 12px;
             font-size: 0.9rem;
             margin-left: 5px;
         }
-
 
         .nav-buttons {
             display: flex;
@@ -109,7 +111,7 @@
             color: white;
         }
 
-        .entry, .homework-item { /* Combined styles for entry and homework-item */
+        .entry, .homework-item, .note-item { /* Combined styles */
             background: #f8f9fa;
             padding: 1rem;
             border-radius: 8px;
@@ -124,30 +126,42 @@
             opacity: 0.7;
         }
 
-
         @keyframes slideIn {
             from { opacity: 0; transform: translateX(-20px); }
             to { opacity: 1; transform: translateX(0); }
         }
 
-        .entry-date, .homework-due-date { /* Combined styles */
+        .entry-date, .homework-due-date, .note-meta { /* Combined styles */
             color: #6c757d;
             font-size: 0.9rem;
             margin-bottom: 0.5rem;
         }
         
-        .homework-subject {
+        .homework-subject, .note-subject-chapter { /* Combined styles */
             font-weight: bold;
             color: #343a40;
             margin-bottom: 0.3rem;
         }
+        .note-subject-chapter .month {
+            font-weight: normal;
+            font-style: italic;
+            color: #555;
+        }
 
-        .entry-content, .homework-task { /* Combined styles */
+
+        .entry-content, .homework-task, .note-content { /* Combined styles */
             color: #343a40;
             line-height: 1.5;
+            word-wrap: break-word;
         }
         
-        .homework-actions {
+        .homework-details {
+            font-size: 0.9rem;
+            color: #495057;
+            margin-top: 0.5rem;
+        }
+
+        .homework-actions, .note-actions { /* Combined styles */
             margin-top: 0.8rem;
             text-align: right;
         }
@@ -195,22 +209,22 @@
             margin-top: 1rem;
         }
 
-        .entry-list, .homework-list-container { /* Combined styles */
+        .entry-list, .homework-list-container, .notes-list-container { /* Combined styles */
             max-height: 350px; /* Adjusted height */
             overflow-y: auto;
             padding-right: 10px;
         }
 
-        .entry-list::-webkit-scrollbar, .homework-list-container::-webkit-scrollbar { /* Combined styles */
+        .entry-list::-webkit-scrollbar, .homework-list-container::-webkit-scrollbar, .notes-list-container::-webkit-scrollbar { /* Combined styles */
             width: 8px;
         }
 
-        .entry-list::-webkit-scrollbar-track, .homework-list-container::-webkit-scrollbar-track { /* Combined styles */
+        .entry-list::-webkit-scrollbar-track, .homework-list-container::-webkit-scrollbar-track, .notes-list-container::-webkit-scrollbar-track { /* Combined styles */
             background: #f1f1f1;
             border-radius: 4px;
         }
 
-        .entry-list::-webkit-scrollbar-thumb, .homework-list-container::-webkit-scrollbar-thumb { /* Combined styles */
+        .entry-list::-webkit-scrollbar-thumb, .homework-list-container::-webkit-scrollbar-thumb, .notes-list-container::-webkit-scrollbar-thumb { /* Combined styles */
             background: #2575fc;
             border-radius: 4px;
         }
@@ -227,9 +241,9 @@
 
         .timetable th, .timetable td {
             border: 1px solid #e1e1e1;
-            padding: 10px; /* Increased padding for better spacing */
+            padding: 10px; 
             text-align: center;
-            height: 40px; /* Fixed height for cells */
+            height: 40px; 
         }
 
         .timetable th {
@@ -239,12 +253,12 @@
         }
 
         .timetable-cell {
-            min-height: 60px; /* Adjusted min-height */
+            min-height: 60px; 
             cursor: pointer;
             position: relative;
             transition: background-color 0.3s;
-            vertical-align: top; /* Align content to the top */
-            padding: 5px; /* Padding inside cell */
+            vertical-align: top; 
+            padding: 5px; 
         }
 
         .timetable-cell:hover {
@@ -257,7 +271,7 @@
             border-radius: 4px;
             padding: 5px;
             margin: 3px 0;
-            font-size: 0.8rem; /* Slightly smaller font for events */
+            font-size: 0.8rem; 
             word-break: break-word;
             text-align: left;
         }
@@ -268,17 +282,18 @@
             color: #555;
         }
 
-
-        .event-form {
+        .event-form, #notesForm, #homeworkForm { /* Combined form styles */
             margin-top: 1rem;
             background: #f8f9fa;
-            padding: 1rem;
+            padding: 1.5rem;
             border-radius: 8px;
+            margin-bottom: 1.5rem;
         }
 
-        .event-form h3 {
+        .event-form h3, #notesForm h3, #homeworkForm h3 {
             margin-bottom: 1rem;
             color: #343a40;
+            text-align: left;
         }
 
         .time-select {
@@ -298,18 +313,10 @@
             margin-top: 1rem;
         }
         
-        /* Homework Tracker Styles */
-        #homeworkTab h2 {
+        #homeworkTab h2, #notesTab h2 { /* Combined tab titles */
             color: #343a40;
             margin-bottom: 1rem;
             text-align: center;
-        }
-        
-        #homeworkForm {
-            background: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
         }
     </style>
 </head>
@@ -358,13 +365,15 @@
             <div class="nav-buttons">
                 <button class="nav-btn active" onclick="showTab('diary')">Diary</button>
                 <button class="nav-btn" onclick="showTab('timetable')">Timetable</button>
-                <button class="nav-btn" onclick="showTab('homework')">Homework</button> <!-- New Homework Button -->
+                <button class="nav-btn" onclick="showTab('homework')">Homework</button>
+                <button class="nav-btn" onclick="showTab('notes')">Notes</button> <!-- New Notes Button -->
                 <button class="nav-btn" onclick="showTab('profile')">Profile</button>
             </div>
 
             <!-- Diary Tab -->
             <div id="diaryTab">
                 <form id="diaryForm">
+                     <h3>New Diary Entry</h3>
                     <div class="form-group">
                         <textarea id="diaryEntry" placeholder="What's on your mind today?" required></textarea>
                     </div>
@@ -375,6 +384,7 @@
 
             <!-- Timetable Tab -->
             <div id="timetableTab" style="display: none;">
+                <h2>Weekly Timetable</h2>
                 <table class="timetable">
                     <thead>
                         <tr>
@@ -388,9 +398,7 @@
                             <th>Sunday</th>
                         </tr>
                     </thead>
-                    <tbody id="timetableBody">
-                        <!-- Timetable rows will be generated by JavaScript -->
-                    </tbody>
+                    <tbody id="timetableBody"></tbody>
                 </table>
                 
                 <div class="event-form">
@@ -414,11 +422,9 @@
                         <div class="time-select">
                             <select id="eventStartTime" required>
                                 <option value="" disabled selected>Start Time</option>
-                                <!-- Time options will be generated by JavaScript -->
                             </select>
                             <select id="eventEndTime" required>
                                 <option value="" disabled selected>End Time</option>
-                                <!-- Time options will be generated by JavaScript -->
                             </select>
                         </div>
                         <button type="submit">Add Event</button>
@@ -431,6 +437,7 @@
             <div id="homeworkTab" style="display: none;">
                 <h2>Homework Tracker</h2>
                 <form id="homeworkForm">
+                    <h3>Add New Homework</h3>
                     <div class="form-group">
                         <input type="text" id="homeworkSubject" placeholder="Subject (e.g., Math, Science)" required>
                     </div>
@@ -441,15 +448,45 @@
                         <label for="homeworkDueDate" style="display:block; margin-bottom: 5px; color: #343a40;">Due Date:</label>
                         <input type="date" id="homeworkDueDate" required>
                     </div>
+                    <div class="form-group">
+                        <label for="homeworkHoursNeeded" style="display:block; margin-bottom: 5px; color: #343a40;">Estimated Hours Needed:</label>
+                        <input type="number" id="homeworkHoursNeeded" placeholder="e.g., 2" min="0.5" step="0.5" required>
+                    </div>
                     <button type="submit">Add Homework</button>
                 </form>
-                <div class="homework-list-container" id="homeworkList">
-                    <!-- Homework items will be displayed here -->
-                </div>
+                <div class="homework-list-container" id="homeworkList"></div>
             </div>
+
+            <!-- Notes Tab -->
+            <div id="notesTab" style="display: none;">
+                <h2>Notes Section</h2>
+                <form id="notesForm">
+                    <h3>Add New Note</h3>
+                    <div class="form-group">
+                        <label for="noteSubject">Subject:</label>
+                        <select id="noteSubject" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="noteMonth">Month:</label>
+                        <select id="noteMonth" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="noteChapter">Chapter/Topic:</label>
+                        <input type="text" id="noteChapter" placeholder="e.g., Chapter 1, Photosynthesis" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="noteContent">Notes:</label>
+                        <textarea id="noteContent" placeholder="Enter your notes here..." required rows="5"></textarea>
+                    </div>
+                    <button type="submit">Save Note</button>
+                </form>
+                <div class="notes-list-container" id="notesList"></div>
+            </div>
+
 
             <!-- Profile Tab -->
             <div id="profileTab" style="display: none;">
+                <h2>User Profile</h2>
                 <div class="profile-info">
                     <div class="profile-field">
                         <label>Name</label>
@@ -461,7 +498,8 @@
                     </div>
                 </div>
                 <button onclick="toggleEditProfile()">Edit Profile</button>
-                <form id="editProfileForm" style="display: none;">
+                <form id="editProfileForm" style="display: none; margin-top:1rem; background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
+                     <h3>Edit Your Profile</h3>
                     <div class="form-group">
                         <input type="text" id="editName" required>
                     </div>
@@ -477,6 +515,9 @@
     </div>
 
     <script>
+        const PREDEFINED_SUBJECTS = ["Mathematics", "Science", "History", "Geography", "Language Arts", "Computer Science", "Art", "Music"];
+        const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
         // Check for existing session
         document.addEventListener('DOMContentLoaded', () => {
             const currentUser = localStorage.getItem('currentUser');
@@ -486,7 +527,9 @@
                 generateTimetable();
                 populateTimeOptions();
                 loadTimetableEvents();
-                loadHomework(); // Load homework on initial load if logged in
+                loadHomework(); 
+                populateNoteDropdowns(); // Populate note dropdowns
+                loadNotes(); // Load notes
             }
         });
 
@@ -505,35 +548,35 @@
         }
 
         function showTab(tab) {
-            const diaryTab = document.getElementById('diaryTab');
-            const timetableTab = document.getElementById('timetableTab');
-            const homeworkTab = document.getElementById('homeworkTab'); // Homework Tab
-            const profileTab = document.getElementById('profileTab');
+            const tabs = ['diaryTab', 'timetableTab', 'homeworkTab', 'notesTab', 'profileTab'];
             const buttons = document.querySelectorAll('.nav-btn');
 
-            // Hide all tabs first
-            diaryTab.style.display = 'none';
-            timetableTab.style.display = 'none';
-            homeworkTab.style.display = 'none';
-            profileTab.style.display = 'none';
-
-            // Deactivate all buttons
+            tabs.forEach(tabId => {
+                const el = document.getElementById(tabId);
+                if (el) el.style.display = 'none';
+            });
             buttons.forEach(btn => btn.classList.remove('active'));
             
+            let activeTabIndex = 0;
             if (tab === 'diary') {
-                diaryTab.style.display = 'block';
-                buttons[0].classList.add('active');
+                document.getElementById('diaryTab').style.display = 'block';
+                activeTabIndex = 0;
             } else if (tab === 'timetable') {
-                timetableTab.style.display = 'block';
-                buttons[1].classList.add('active');
-            } else if (tab === 'homework') { // Show Homework Tab
-                homeworkTab.style.display = 'block';
-                buttons[2].classList.add('active');
-                loadHomework(); // Ensure homework is loaded when tab is clicked
-            } else if (tab === 'profile') { // Adjusted index for profile button
-                profileTab.style.display = 'block';
-                buttons[3].classList.add('active');
+                document.getElementById('timetableTab').style.display = 'block';
+                activeTabIndex = 1;
+            } else if (tab === 'homework') { 
+                document.getElementById('homeworkTab').style.display = 'block';
+                activeTabIndex = 2;
+                loadHomework(); 
+            } else if (tab === 'notes') { // Show Notes Tab
+                document.getElementById('notesTab').style.display = 'block';
+                activeTabIndex = 3;
+                loadNotes(); 
+            } else if (tab === 'profile') { 
+                document.getElementById('profileTab').style.display = 'block';
+                activeTabIndex = 4;
             }
+            buttons[activeTabIndex].classList.add('active');
         }
 
         // Handle Login
@@ -541,7 +584,6 @@
             e.preventDefault();
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
-
             const users = JSON.parse(localStorage.getItem('users') || '[]');
             const user = users.find(u => u.email === email && u.password === password);
 
@@ -552,7 +594,9 @@
                 generateTimetable();
                 populateTimeOptions();
                 loadTimetableEvents();
-                loadHomework(); // Load homework on login
+                loadHomework();
+                populateNoteDropdowns();
+                loadNotes();
             } else {
                 alert('Invalid credentials!');
             }
@@ -564,21 +608,19 @@
             const name = document.getElementById('signupName').value;
             const email = document.getElementById('signupEmail').value;
             const password = document.getElementById('signupPassword').value;
-
             const users = JSON.parse(localStorage.getItem('users') || '[]');
             
             if (users.find(u => u.email === email)) {
                 alert('Email already exists!');
                 return;
             }
-
             users.push({ name, email, password });
             localStorage.setItem('users', JSON.stringify(users));
             localStorage.setItem('currentUser', email);
             showMainSection();
             generateTimetable();
             populateTimeOptions();
-            // No need to load data for a new user as it will be empty
+            populateNoteDropdowns();
         });
 
         // Handle Diary Entry
@@ -586,13 +628,8 @@
             e.preventDefault();
             const content = document.getElementById('diaryEntry').value;
             const currentUser = localStorage.getItem('currentUser');
-            
             const entries = JSON.parse(localStorage.getItem(`entries_${currentUser}`) || '[]');
-            entries.unshift({
-                content,
-                date: new Date().toLocaleString()
-            });
-            
+            entries.unshift({ content, date: new Date().toLocaleString() });
             localStorage.setItem(`entries_${currentUser}`, JSON.stringify(entries));
             document.getElementById('diaryEntry').value = '';
             loadEntries();
@@ -602,8 +639,7 @@
             const currentUser = localStorage.getItem('currentUser');
             const entries = JSON.parse(localStorage.getItem(`entries_${currentUser}`) || '[]');
             const entryList = document.getElementById('entryList');
-            entryList.innerHTML = ''; // Clear existing entries
-            
+            entryList.innerHTML = ''; 
             entries.forEach(entry => {
                 const entryDiv = document.createElement('div');
                 entryDiv.classList.add('entry');
@@ -618,16 +654,14 @@
         // Timetable Functions
         function generateTimetable() {
             const timetableBody = document.getElementById('timetableBody');
-            timetableBody.innerHTML = ''; // Clear existing timetable
+            timetableBody.innerHTML = ''; 
             const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-
-            for (let i = 0; i < 24; i++) { // 24 hours
+            for (let i = 0; i < 24; i++) {
                 const row = document.createElement('tr');
                 const timeCell = document.createElement('td');
-                const hour = i.toString().padStart(2, '0'); // Format as HH
+                const hour = i.toString().padStart(2, '0');
                 timeCell.textContent = `${hour}:00`;
                 row.appendChild(timeCell);
-
                 days.forEach(day => {
                     const cell = document.createElement('td');
                     cell.classList.add('timetable-cell');
@@ -638,43 +672,31 @@
                 });
                 timetableBody.appendChild(row);
             }
-            loadTimetableEvents(); // Reload events after generating table
+            loadTimetableEvents();
         }
 
         function populateTimeOptions() {
             const startTimeSelect = document.getElementById('eventStartTime');
             const endTimeSelect = document.getElementById('eventEndTime');
-            startTimeSelect.innerHTML = '<option value="" disabled selected>Start Time</option>'; // Reset
-            endTimeSelect.innerHTML = '<option value="" disabled selected>End Time</option>'; // Reset
-
-            for (let i = 0; i < 24; i++) { // 24 hours
+            startTimeSelect.innerHTML = '<option value="" disabled selected>Start Time</option>';
+            endTimeSelect.innerHTML = '<option value="" disabled selected>End Time</option>';
+            for (let i = 0; i < 24; i++) {
                 const hour = i.toString().padStart(2, '0');
                 const timeValue = `${hour}:00`;
-                
-                const startOption = document.createElement('option');
-                startOption.value = timeValue;
-                startOption.textContent = timeValue;
-                startTimeSelect.appendChild(startOption);
-
-                const endOption = document.createElement('option');
-                endOption.value = timeValue;
-                endOption.textContent = timeValue;
-                endTimeSelect.appendChild(endOption);
+                [startTimeSelect, endTimeSelect].forEach(select => {
+                    const option = document.createElement('option');
+                    option.value = timeValue;
+                    option.textContent = timeValue;
+                    select.appendChild(option);
+                });
             }
         }
         
         function handleCellClick(day, time) {
-            // Pre-fill form for quick add, or open a modal for detailed add
             document.getElementById('eventDay').value = day;
             document.getElementById('eventStartTime').value = time;
-            // Optionally, set end time to one hour later
             const startHour = parseInt(time.split(':')[0]);
-            if (startHour < 23) {
-                const endHour = (startHour + 1).toString().padStart(2, '0');
-                document.getElementById('eventEndTime').value = `${endHour}:00`;
-            } else {
-                 document.getElementById('eventEndTime').value = "23:00"; // Max end time
-            }
+            document.getElementById('eventEndTime').value = startHour < 23 ? `${(startHour + 1).toString().padStart(2, '0')}:00` : "23:00";
             document.getElementById('eventTitle').focus();
         }
 
@@ -690,11 +712,9 @@
                 alert('End time must be after start time.');
                 return;
             }
-
             const events = JSON.parse(localStorage.getItem(`timetable_${currentUser}`) || '[]');
-            events.push({ title, day, startTime, endTime, id: Date.now() }); // Added unique ID
+            events.push({ title, day, startTime, endTime, id: Date.now() });
             localStorage.setItem(`timetable_${currentUser}`, JSON.stringify(events));
-            
             document.getElementById('eventForm').reset();
             loadTimetableEvents();
         });
@@ -702,16 +722,10 @@
         function loadTimetableEvents() {
             const currentUser = localStorage.getItem('currentUser');
             const events = JSON.parse(localStorage.getItem(`timetable_${currentUser}`) || '[]');
-            
-            // Clear existing events from cells
-            document.querySelectorAll('.timetable-cell').forEach(cell => {
-                cell.innerHTML = ''; // Clear previous events, but keep data attributes and click handlers
-            });
-
+            document.querySelectorAll('.timetable-cell').forEach(cell => cell.innerHTML = '');
             events.forEach(event => {
                 const startHour = parseInt(event.startTime.split(':')[0]);
                 const endHour = parseInt(event.endTime.split(':')[0]);
-
                 for (let hour = startHour; hour < endHour; hour++) {
                     const timeSlot = hour.toString().padStart(2, '0') + ':00';
                     const cell = document.querySelector(`.timetable-cell[data-day="${event.day}"][data-time="${timeSlot}"]`);
@@ -719,19 +733,11 @@
                         const eventDiv = document.createElement('div');
                         eventDiv.classList.add('timetable-event');
                         eventDiv.textContent = event.title;
-                        
-                        // Add a small delete button to the event
                         const deleteBtn = document.createElement('button');
                         deleteBtn.textContent = 'x';
                         deleteBtn.classList.add('action-btn');
-                        deleteBtn.style.float = 'right';
-                        deleteBtn.style.marginLeft = '5px';
-                        deleteBtn.style.padding = '2px 5px';
-                        deleteBtn.style.fontSize = '0.7rem';
-                        deleteBtn.onclick = (e) => {
-                            e.stopPropagation(); // Prevent cell click event
-                            deleteTimetableEvent(event.id);
-                        };
+                        deleteBtn.style.cssText = 'float: right; margin-left: 5px; padding: 1px 4px; font-size: 0.7rem; line-height:1; background: #ff6b6b;';
+                        deleteBtn.onclick = (e) => { e.stopPropagation(); deleteTimetableEvent(event.id); };
                         eventDiv.appendChild(deleteBtn);
                         cell.appendChild(eventDiv);
                     }
@@ -744,15 +750,10 @@
             let events = JSON.parse(localStorage.getItem(`timetable_${currentUser}`) || '[]');
             events = events.filter(event => event.id !== eventId);
             localStorage.setItem(`timetable_${currentUser}`, JSON.stringify(events));
-            loadTimetableEvents(); // Refresh the view
+            loadTimetableEvents();
         }
         
-        function saveTimetableEvents() {
-            // This function is technically not needed if events are saved on add/delete
-            // But can be used as a manual trigger or for future bulk operations
-            alert('Timetable events are saved automatically!');
-        }
-
+        function saveTimetableEvents() { alert('Timetable events are saved automatically as you add/delete them!'); }
 
         // Homework Tracker Functions
         document.getElementById('homeworkForm').addEventListener('submit', (e) => {
@@ -760,17 +761,16 @@
             const subject = document.getElementById('homeworkSubject').value;
             const task = document.getElementById('homeworkTask').value;
             const dueDate = document.getElementById('homeworkDueDate').value;
+            const hoursNeeded = parseFloat(document.getElementById('homeworkHoursNeeded').value);
             const currentUser = localStorage.getItem('currentUser');
 
+            if (isNaN(hoursNeeded) || hoursNeeded <= 0) {
+                alert("Please enter a valid number for hours needed.");
+                return;
+            }
+
             const homeworkItems = JSON.parse(localStorage.getItem(`homework_${currentUser}`) || '[]');
-            homeworkItems.push({
-                id: Date.now(), // Unique ID for each item
-                subject,
-                task,
-                dueDate,
-                completed: false
-            });
-            
+            homeworkItems.push({ id: Date.now(), subject, task, dueDate, hoursNeeded, completed: false });
             localStorage.setItem(`homework_${currentUser}`, JSON.stringify(homeworkItems));
             document.getElementById('homeworkForm').reset();
             loadHomework();
@@ -778,25 +778,31 @@
 
         function loadHomework() {
             const currentUser = localStorage.getItem('currentUser');
-            const homeworkItems = JSON.parse(localStorage.getItem(`homework_${currentUser}`) || '[]');
+            let homeworkItems = JSON.parse(localStorage.getItem(`homework_${currentUser}`) || '[]');
             const homeworkList = document.getElementById('homeworkList');
-            homeworkList.innerHTML = ''; // Clear existing items
+            homeworkList.innerHTML = '';
 
-            homeworkItems.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate)); // Sort by due date
+            // Prioritization: 1. Incomplete first, 2. Due date (earliest), 3. Hours needed (more hours)
+            homeworkItems.sort((a, b) => {
+                if (a.completed !== b.completed) return a.completed ? 1 : -1; // Incomplete tasks first
+                const dateA = new Date(a.dueDate);
+                const dateB = new Date(b.dueDate);
+                if (dateA.getTime() !== dateB.getTime()) return dateA - dateB; // Sort by due date (earliest first)
+                return b.hoursNeeded - a.hoursNeeded; // Sort by hours needed (descending)
+            });
 
             homeworkItems.forEach(item => {
                 const itemDiv = document.createElement('div');
                 itemDiv.classList.add('homework-item');
-                if (item.completed) {
-                    itemDiv.classList.add('completed');
-                }
+                if (item.completed) itemDiv.classList.add('completed');
                 itemDiv.innerHTML = `
                     <div class="homework-subject">${item.subject}</div>
                     <div class="homework-task">${item.task.replace(/\n/g, '<br>')}</div>
                     <div class="homework-due-date">Due: ${new Date(item.dueDate).toLocaleDateString()}</div>
+                    <div class="homework-details">Est. Hours: ${item.hoursNeeded}</div>
                     <div class="homework-actions">
                         <button class="action-btn" onclick="toggleHomeworkStatus(${item.id})">
-                            ${item.completed ? 'Mark as Incomplete' : 'Mark as Complete'}
+                            ${item.completed ? 'Mark Incomplete' : 'Mark Complete'}
                         </button>
                         <button class="action-btn" style="background: #dc3545;" onclick="deleteHomeworkItem(${item.id})">Delete</button>
                     </div>
@@ -824,18 +830,94 @@
             loadHomework();
         }
 
+        // Notes Section Functions
+        function populateNoteDropdowns() {
+            const subjectSelect = document.getElementById('noteSubject');
+            const monthSelect = document.getElementById('noteMonth');
+            
+            subjectSelect.innerHTML = '<option value="" disabled selected>Select Subject</option>';
+            PREDEFINED_SUBJECTS.forEach(subject => {
+                const option = document.createElement('option');
+                option.value = subject;
+                option.textContent = subject;
+                subjectSelect.appendChild(option);
+            });
+
+            monthSelect.innerHTML = '<option value="" disabled selected>Select Month</option>';
+            MONTHS.forEach(month => {
+                const option = document.createElement('option');
+                option.value = month;
+                option.textContent = month;
+                monthSelect.appendChild(option);
+            });
+        }
+
+        document.getElementById('notesForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const subject = document.getElementById('noteSubject').value;
+            const month = document.getElementById('noteMonth').value;
+            const chapter = document.getElementById('noteChapter').value;
+            const content = document.getElementById('noteContent').value;
+            const currentUser = localStorage.getItem('currentUser');
+
+            const notes = JSON.parse(localStorage.getItem(`notes_${currentUser}`) || '[]');
+            notes.push({ id: Date.now(), subject, month, chapter, content, date: new Date().toISOString() });
+            localStorage.setItem(`notes_${currentUser}`, JSON.stringify(notes));
+            
+            document.getElementById('notesForm').reset();
+            loadNotes();
+        });
+
+        function loadNotes() {
+            const currentUser = localStorage.getItem('currentUser');
+            const notes = JSON.parse(localStorage.getItem(`notes_${currentUser}`) || '[]');
+            const notesList = document.getElementById('notesList');
+            notesList.innerHTML = '';
+
+            // Sort notes: by subject, then by month index, then by chapter, then by date
+            notes.sort((a,b) => {
+                if (a.subject.toLowerCase() < b.subject.toLowerCase()) return -1;
+                if (a.subject.toLowerCase() > b.subject.toLowerCase()) return 1;
+                if (MONTHS.indexOf(a.month) < MONTHS.indexOf(b.month)) return -1;
+                if (MONTHS.indexOf(a.month) > MONTHS.indexOf(b.month)) return 1;
+                if (a.chapter.toLowerCase() < b.chapter.toLowerCase()) return -1;
+                if (a.chapter.toLowerCase() > b.chapter.toLowerCase()) return 1;
+                return new Date(b.date) - new Date(a.date); // Most recent first for same chapter
+            });
+
+            notes.forEach(note => {
+                const noteDiv = document.createElement('div');
+                noteDiv.classList.add('note-item');
+                noteDiv.innerHTML = `
+                    <div class="note-subject-chapter">${note.subject} - ${note.chapter} <span class="month">(${note.month})</span></div>
+                    <div class="note-meta">Added: ${new Date(note.date).toLocaleDateString()}</div>
+                    <div class="note-content">${note.content.replace(/\n/g, '<br>')}</div>
+                    <div class="note-actions">
+                        <button class="action-btn" style="background: #dc3545;" onclick="deleteNoteItem(${note.id})">Delete</button>
+                    </div>
+                `;
+                notesList.appendChild(noteDiv);
+            });
+        }
+
+        function deleteNoteItem(noteId) {
+            const currentUser = localStorage.getItem('currentUser');
+            let notes = JSON.parse(localStorage.getItem(`notes_${currentUser}`) || '[]');
+            notes = notes.filter(note => note.id !== noteId);
+            localStorage.setItem(`notes_${currentUser}`, JSON.stringify(notes));
+            loadNotes();
+        }
 
         // Profile Functions
         function loadProfile() {
             const currentUserEmail = localStorage.getItem('currentUser');
             const users = JSON.parse(localStorage.getItem('users') || '[]');
             const user = users.find(u => u.email === currentUserEmail);
-
             if (user) {
                 document.getElementById('profileName').textContent = user.name;
                 document.getElementById('profileEmail').textContent = user.email;
                 document.getElementById('editName').value = user.name;
-                document.getElementById('editEmail').value = user.email; // Usually email is not editable, but for simplicity
+                document.getElementById('editEmail').value = user.email;
             }
         }
 
@@ -847,24 +929,22 @@
         document.getElementById('editProfileForm').addEventListener('submit', (e) => {
             e.preventDefault();
             const newName = document.getElementById('editName').value;
-            const newEmail = document.getElementById('editEmail').value; // Be cautious with email changes
+            const newEmail = document.getElementById('editEmail').value;
             const currentUserEmail = localStorage.getItem('currentUser');
             let users = JSON.parse(localStorage.getItem('users') || '[]');
             
-            // Check if new email already exists (if different from current)
             if (newEmail !== currentUserEmail && users.some(u => u.email === newEmail)) {
                 alert('This email is already taken by another account.');
                 return;
             }
-
             const userIndex = users.findIndex(u => u.email === currentUserEmail);
             if (userIndex > -1) {
                 users[userIndex].name = newName;
-                users[userIndex].email = newEmail; // Update email
+                users[userIndex].email = newEmail;
                 localStorage.setItem('users', JSON.stringify(users));
-                localStorage.setItem('currentUser', newEmail); // Update current user session key if email changed
+                localStorage.setItem('currentUser', newEmail);
                 loadProfile();
-                toggleEditProfile(); // Hide form after saving
+                toggleEditProfile();
                 alert('Profile updated successfully!');
             }
         });
@@ -876,8 +956,12 @@
             document.getElementById('loginSection').style.display = 'block';
             document.getElementById('loginEmail').value = '';
             document.getElementById('loginPassword').value = '';
+            // Clear dynamic content areas
+            document.getElementById('entryList').innerHTML = '';
+            document.getElementById('timetableBody').innerHTML = '';
+            document.getElementById('homeworkList').innerHTML = '';
+            document.getElementById('notesList').innerHTML = '';
         }
-
     </script>
 </body>
 </html>
