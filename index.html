@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Diary</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 700px; /* Increased max-width for more content */
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: #2575fc;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        input, textarea, select { /* Added select here */
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e1e1;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus { /* Added select here */
+            border-color: #2575fc;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.1);
+        }
+
+        textarea {
+            height: 150px;
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 117, 252, 0.2);
+        }
+        
+        .action-btn { /* Specific class for smaller action buttons */
+            width: auto;
+            padding: 8px 12px;
+            font-size: 0.9rem;
+            margin-left: 5px;
+        }
+
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-btn {
+            flex: 1;
+            background: rgba(37, 117, 252, 0.1);
+            color: #2575fc;
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            color: white;
+        }
+
+        .entry, .homework-item { /* Combined styles for entry and homework-item */
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            animation: slideIn 0.3s ease;
+            border-left: 4px solid #2575fc; /* Accent border */
+        }
+        
+        .homework-item.completed {
+            border-left-color: #28a745; /* Green for completed */
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .entry-date, .homework-due-date { /* Combined styles */
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .homework-subject {
+            font-weight: bold;
+            color: #343a40;
+            margin-bottom: 0.3rem;
+        }
+
+        .entry-content, .homework-task { /* Combined styles */
+            color: #343a40;
+            line-height: 1.5;
+        }
+        
+        .homework-actions {
+            margin-top: 0.8rem;
+            text-align: right;
+        }
+
+        .toggle-form {
+            text-align: center;
+            margin-top: 1rem;
+            color: #6c757d;
+        }
+
+        .toggle-form span {
+            color: #2575fc;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        #profileSection {
+            animation: fadeIn 0.5s ease;
+        }
+
+        .profile-info {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-field {
+            margin-bottom: 1rem;
+        }
+
+        .profile-field label {
+            font-weight: bold;
+            color: #343a40;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .profile-field span {
+            color: #6c757d;
+        }
+
+        .logout-btn {
+            background: linear-gradient(45deg, #dc3545, #ff4757);
+            margin-top: 1rem;
+        }
+
+        .entry-list, .homework-list-container { /* Combined styles */
+            max-height: 350px; /* Adjusted height */
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .entry-list::-webkit-scrollbar, .homework-list-container::-webkit-scrollbar { /* Combined styles */
+            width: 8px;
+        }
+
+        .entry-list::-webkit-scrollbar-track, .homework-list-container::-webkit-scrollbar-track { /* Combined styles */
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .entry-list::-webkit-scrollbar-thumb, .homework-list-container::-webkit-scrollbar-thumb { /* Combined styles */
+            background: #2575fc;
+            border-radius: 4px;
+        }
+
+        /* Timetable Styles */
+        .timetable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden; /* Ensures border-radius is applied to table */
+        }
+
+        .timetable th, .timetable td {
+            border: 1px solid #e1e1e1;
+            padding: 10px; /* Increased padding for better spacing */
+            text-align: center;
+            height: 40px; /* Fixed height for cells */
+        }
+
+        .timetable th {
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            color: white;
+            font-weight: normal;
+        }
+
+        .timetable-cell {
+            min-height: 60px; /* Adjusted min-height */
+            cursor: pointer;
+            position: relative;
+            transition: background-color 0.3s;
+            vertical-align: top; /* Align content to the top */
+            padding: 5px; /* Padding inside cell */
+        }
+
+        .timetable-cell:hover {
+            background-color: rgba(37, 117, 252, 0.1);
+        }
+
+        .timetable-event {
+            background-color: rgba(37, 117, 252, 0.2);
+            border-left: 3px solid #2575fc;
+            border-radius: 4px;
+            padding: 5px;
+            margin: 3px 0;
+            font-size: 0.8rem; /* Slightly smaller font for events */
+            word-break: break-word;
+            text-align: left;
+        }
+        
+        .timetable-event small {
+            display: block;
+            font-size: 0.7rem;
+            color: #555;
+        }
+
+
+        .event-form {
+            margin-top: 1rem;
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .event-form h3 {
+            margin-bottom: 1rem;
+            color: #343a40;
+        }
+
+        .time-select {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .time-select select {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #e1e1e1;
+            border-radius: 4px;
+        }
+
+        .save-timetable {
+            margin-top: 1rem;
+        }
+        
+        /* Homework Tracker Styles */
+        #homeworkTab h2 {
+            color: #343a40;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        #homeworkForm {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Section -->
+        <div id="loginSection">
+            <h1>Welcome Back!</h1>
+            <form id="loginForm">
+                <div class="form-group">
+                    <input type="email" id="loginEmail" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+            <div class="toggle-form">
+                New here? <span onclick="toggleForms()">Create Account</span>
+            </div>
+        </div>
+
+        <!-- Signup Section -->
+        <div id="signupSection" style="display: none;">
+            <h1>Create Account</h1>
+            <form id="signupForm">
+                <div class="form-group">
+                    <input type="text" id="signupName" placeholder="Full Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="signupEmail" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="signupPassword" placeholder="Password" required>
+                </div>
+                <button type="submit">Sign Up</button>
+            </form>
+            <div class="toggle-form">
+                Already have an account? <span onclick="toggleForms()">Login</span>
+            </div>
+        </div>
+
+        <!-- Main Diary Section -->
+        <div id="mainSection" style="display: none;">
+            <h1>My Personal Organizer</h1>
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="showTab('diary')">Diary</button>
+                <button class="nav-btn" onclick="showTab('timetable')">Timetable</button>
+                <button class="nav-btn" onclick="showTab('homework')">Homework</button> <!-- New Homework Button -->
+                <button class="nav-btn" onclick="showTab('profile')">Profile</button>
+            </div>
+
+            <!-- Diary Tab -->
+            <div id="diaryTab">
+                <form id="diaryForm">
+                    <div class="form-group">
+                        <textarea id="diaryEntry" placeholder="What's on your mind today?" required></textarea>
+                    </div>
+                    <button type="submit">Save Entry</button>
+                </form>
+                <div class="entry-list" id="entryList"></div>
+            </div>
+
+            <!-- Timetable Tab -->
+            <div id="timetableTab" style="display: none;">
+                <table class="timetable">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Monday</th>
+                            <th>Tuesday</th>
+                            <th>Wednesday</th>
+                            <th>Thursday</th>
+                            <th>Friday</th>
+                            <th>Saturday</th>
+                            <th>Sunday</th>
+                        </tr>
+                    </thead>
+                    <tbody id="timetableBody">
+                        <!-- Timetable rows will be generated by JavaScript -->
+                    </tbody>
+                </table>
+                
+                <div class="event-form">
+                    <h3>Add New Event</h3>
+                    <form id="eventForm">
+                        <div class="form-group">
+                            <input type="text" id="eventTitle" placeholder="Event Title" required>
+                        </div>
+                        <div class="form-group">
+                            <select id="eventDay" required>
+                                <option value="" disabled selected>Select Day</option>
+                                <option value="Monday">Monday</option>
+                                <option value="Tuesday">Tuesday</option>
+                                <option value="Wednesday">Wednesday</option>
+                                <option value="Thursday">Thursday</option>
+                                <option value="Friday">Friday</option>
+                                <option value="Saturday">Saturday</option>
+                                <option value="Sunday">Sunday</option>
+                            </select>
+                        </div>
+                        <div class="time-select">
+                            <select id="eventStartTime" required>
+                                <option value="" disabled selected>Start Time</option>
+                                <!-- Time options will be generated by JavaScript -->
+                            </select>
+                            <select id="eventEndTime" required>
+                                <option value="" disabled selected>End Time</option>
+                                <!-- Time options will be generated by JavaScript -->
+                            </select>
+                        </div>
+                        <button type="submit">Add Event</button>
+                    </form>
+                </div>
+                 <button class="save-timetable" onclick="saveTimetableEvents()">Save Timetable Changes</button>
+            </div>
+
+            <!-- Homework Tab -->
+            <div id="homeworkTab" style="display: none;">
+                <h2>Homework Tracker</h2>
+                <form id="homeworkForm">
+                    <div class="form-group">
+                        <input type="text" id="homeworkSubject" placeholder="Subject (e.g., Math, Science)" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="homeworkTask" placeholder="Task description" required rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="homeworkDueDate" style="display:block; margin-bottom: 5px; color: #343a40;">Due Date:</label>
+                        <input type="date" id="homeworkDueDate" required>
+                    </div>
+                    <button type="submit">Add Homework</button>
+                </form>
+                <div class="homework-list-container" id="homeworkList">
+                    <!-- Homework items will be displayed here -->
+                </div>
+            </div>
+
+            <!-- Profile Tab -->
+            <div id="profileTab" style="display: none;">
+                <div class="profile-info">
+                    <div class="profile-field">
+                        <label>Name</label>
+                        <span id="profileName"></span>
+                    </div>
+                    <div class="profile-field">
+                        <label>Email</label>
+                        <span id="profileEmail"></span>
+                    </div>
+                </div>
+                <button onclick="toggleEditProfile()">Edit Profile</button>
+                <form id="editProfileForm" style="display: none;">
+                    <div class="form-group">
+                        <input type="text" id="editName" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="editEmail" required>
+                    </div>
+                    <button type="submit">Save Changes</button>
+                </form>
+            </div>
+
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <script>
+        // Check for existing session
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentUser = localStorage.getItem('currentUser');
+            if (currentUser) {
+                showMainSection();
+                loadEntries();
+                generateTimetable();
+                populateTimeOptions();
+                loadTimetableEvents();
+                loadHomework(); // Load homework on initial load if logged in
+            }
+        });
+
+        function toggleForms() {
+            const loginSection = document.getElementById('loginSection');
+            const signupSection = document.getElementById('signupSection');
+            loginSection.style.display = loginSection.style.display === 'none' ? 'block' : 'none';
+            signupSection.style.display = signupSection.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function showMainSection() {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('signupSection').style.display = 'none';
+            document.getElementById('mainSection').style.display = 'block';
+            loadProfile();
+        }
+
+        function showTab(tab) {
+            const diaryTab = document.getElementById('diaryTab');
+            const timetableTab = document.getElementById('timetableTab');
+            const homeworkTab = document.getElementById('homeworkTab'); // Homework Tab
+            const profileTab = document.getElementById('profileTab');
+            const buttons = document.querySelectorAll('.nav-btn');
+
+            // Hide all tabs first
+            diaryTab.style.display = 'none';
+            timetableTab.style.display = 'none';
+            homeworkTab.style.display = 'none';
+            profileTab.style.display = 'none';
+
+            // Deactivate all buttons
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            if (tab === 'diary') {
+                diaryTab.style.display = 'block';
+                buttons[0].classList.add('active');
+            } else if (tab === 'timetable') {
+                timetableTab.style.display = 'block';
+                buttons[1].classList.add('active');
+            } else if (tab === 'homework') { // Show Homework Tab
+                homeworkTab.style.display = 'block';
+                buttons[2].classList.add('active');
+                loadHomework(); // Ensure homework is loaded when tab is clicked
+            } else if (tab === 'profile') { // Adjusted index for profile button
+                profileTab.style.display = 'block';
+                buttons[3].classList.add('active');
+            }
+        }
+
+        // Handle Login
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.email === email && u.password === password);
+
+            if (user) {
+                localStorage.setItem('currentUser', email);
+                showMainSection();
+                loadEntries();
+                generateTimetable();
+                populateTimeOptions();
+                loadTimetableEvents();
+                loadHomework(); // Load homework on login
+            } else {
+                alert('Invalid credentials!');
+            }
+        });
+
+        // Handle Signup
+        document.getElementById('signupForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            if (users.find(u => u.email === email)) {
+                alert('Email already exists!');
+                return;
+            }
+
+            users.push({ name, email, password });
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('currentUser', email);
+            showMainSection();
+            generateTimetable();
+            populateTimeOptions();
+            // No need to load data for a new user as it will be empty
+        });
+
+        // Handle Diary Entry
+        document.getElementById('diaryForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const content = document.getElementById('diaryEntry').value;
+            const currentUser = localStorage.getItem('currentUser');
+            
+            const entries = JSON.parse(localStorage.getItem(`entries_${currentUser}`) || '[]');
+            entries.unshift({
+                content,
+                date: new Date().toLocaleString()
+            });
+            
+            localStorage.setItem(`entries_${currentUser}`, JSON.stringify(entries));
+            document.getElementById('diaryEntry').value = '';
+            loadEntries();
+        });
+
+        function loadEntries() {
+            const currentUser = localStorage.getItem('currentUser');
+            const entries = JSON.parse(localStorage.getItem(`entries_${currentUser}`) || '[]');
+            const entryList = document.getElementById('entryList');
+            entryList.innerHTML = ''; // Clear existing entries
+            
+            entries.forEach(entry => {
+                const entryDiv = document.createElement('div');
+                entryDiv.classList.add('entry');
+                entryDiv.innerHTML = `
+                    <div class="entry-date">${entry.date}</div>
+                    <div class="entry-content">${entry.content.replace(/\n/g, '<br>')}</div>
+                `;
+                entryList.appendChild(entryDiv);
+            });
+        }
+
+        // Timetable Functions
+        function generateTimetable() {
+            const timetableBody = document.getElementById('timetableBody');
+            timetableBody.innerHTML = ''; // Clear existing timetable
+            const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+            for (let i = 0; i < 24; i++) { // 24 hours
+                const row = document.createElement('tr');
+                const timeCell = document.createElement('td');
+                const hour = i.toString().padStart(2, '0'); // Format as HH
+                timeCell.textContent = `${hour}:00`;
+                row.appendChild(timeCell);
+
+                days.forEach(day => {
+                    const cell = document.createElement('td');
+                    cell.classList.add('timetable-cell');
+                    cell.dataset.day = day;
+                    cell.dataset.time = `${hour}:00`;
+                    cell.onclick = () => handleCellClick(day, `${hour}:00`);
+                    row.appendChild(cell);
+                });
+                timetableBody.appendChild(row);
+            }
+            loadTimetableEvents(); // Reload events after generating table
+        }
+
+        function populateTimeOptions() {
+            const startTimeSelect = document.getElementById('eventStartTime');
+            const endTimeSelect = document.getElementById('eventEndTime');
+            startTimeSelect.innerHTML = '<option value="" disabled selected>Start Time</option>'; // Reset
+            endTimeSelect.innerHTML = '<option value="" disabled selected>End Time</option>'; // Reset
+
+            for (let i = 0; i < 24; i++) { // 24 hours
+                const hour = i.toString().padStart(2, '0');
+                const timeValue = `${hour}:00`;
+                
+                const startOption = document.createElement('option');
+                startOption.value = timeValue;
+                startOption.textContent = timeValue;
+                startTimeSelect.appendChild(startOption);
+
+                const endOption = document.createElement('option');
+                endOption.value = timeValue;
+                endOption.textContent = timeValue;
+                endTimeSelect.appendChild(endOption);
+            }
+        }
+        
+        function handleCellClick(day, time) {
+            // Pre-fill form for quick add, or open a modal for detailed add
+            document.getElementById('eventDay').value = day;
+            document.getElementById('eventStartTime').value = time;
+            // Optionally, set end time to one hour later
+            const startHour = parseInt(time.split(':')[0]);
+            if (startHour < 23) {
+                const endHour = (startHour + 1).toString().padStart(2, '0');
+                document.getElementById('eventEndTime').value = `${endHour}:00`;
+            } else {
+                 document.getElementById('eventEndTime').value = "23:00"; // Max end time
+            }
+            document.getElementById('eventTitle').focus();
+        }
+
+        document.getElementById('eventForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const title = document.getElementById('eventTitle').value;
+            const day = document.getElementById('eventDay').value;
+            const startTime = document.getElementById('eventStartTime').value;
+            const endTime = document.getElementById('eventEndTime').value;
+            const currentUser = localStorage.getItem('currentUser');
+
+            if (new Date(`1970/01/01 ${startTime}`) >= new Date(`1970/01/01 ${endTime}`)) {
+                alert('End time must be after start time.');
+                return;
+            }
+
+            const events = JSON.parse(localStorage.getItem(`timetable_${currentUser}`) || '[]');
+            events.push({ title, day, startTime, endTime, id: Date.now() }); // Added unique ID
+            localStorage.setItem(`timetable_${currentUser}`, JSON.stringify(events));
+            
+            document.getElementById('eventForm').reset();
+            loadTimetableEvents();
+        });
+
+        function loadTimetableEvents() {
+            const currentUser = localStorage.getItem('currentUser');
+            const events = JSON.parse(localStorage.getItem(`timetable_${currentUser}`) || '[]');
+            
+            // Clear existing events from cells
+            document.querySelectorAll('.timetable-cell').forEach(cell => {
+                cell.innerHTML = ''; // Clear previous events, but keep data attributes and click handlers
+            });
+
+            events.forEach(event => {
+                const startHour = parseInt(event.startTime.split(':')[0]);
+                const endHour = parseInt(event.endTime.split(':')[0]);
+
+                for (let hour = startHour; hour < endHour; hour++) {
+                    const timeSlot = hour.toString().padStart(2, '0') + ':00';
+                    const cell = document.querySelector(`.timetable-cell[data-day="${event.day}"][data-time="${timeSlot}"]`);
+                    if (cell) {
+                        const eventDiv = document.createElement('div');
+                        eventDiv.classList.add('timetable-event');
+                        eventDiv.textContent = event.title;
+                        
+                        // Add a small delete button to the event
+                        const deleteBtn = document.createElement('button');
+                        deleteBtn.textContent = 'x';
+                        deleteBtn.classList.add('action-btn');
+                        deleteBtn.style.float = 'right';
+                        deleteBtn.style.marginLeft = '5px';
+                        deleteBtn.style.padding = '2px 5px';
+                        deleteBtn.style.fontSize = '0.7rem';
+                        deleteBtn.onclick = (e) => {
+                            e.stopPropagation(); // Prevent cell click event
+                            deleteTimetableEvent(event.id);
+                        };
+                        eventDiv.appendChild(deleteBtn);
+                        cell.appendChild(eventDiv);
+                    }
+                }
+            });
+        }
+
+        function deleteTimetableEvent(eventId) {
+            const currentUser = localStorage.getItem('currentUser');
+            let events = JSON.parse(localStorage.getItem(`timetable_${currentUser}`) || '[]');
+            events = events.filter(event => event.id !== eventId);
+            localStorage.setItem(`timetable_${currentUser}`, JSON.stringify(events));
+            loadTimetableEvents(); // Refresh the view
+        }
+        
+        function saveTimetableEvents() {
+            // This function is technically not needed if events are saved on add/delete
+            // But can be used as a manual trigger or for future bulk operations
+            alert('Timetable events are saved automatically!');
+        }
+
+
+        // Homework Tracker Functions
+        document.getElementById('homeworkForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const subject = document.getElementById('homeworkSubject').value;
+            const task = document.getElementById('homeworkTask').value;
+            const dueDate = document.getElementById('homeworkDueDate').value;
+            const currentUser = localStorage.getItem('currentUser');
+
+            const homeworkItems = JSON.parse(localStorage.getItem(`homework_${currentUser}`) || '[]');
+            homeworkItems.push({
+                id: Date.now(), // Unique ID for each item
+                subject,
+                task,
+                dueDate,
+                completed: false
+            });
+            
+            localStorage.setItem(`homework_${currentUser}`, JSON.stringify(homeworkItems));
+            document.getElementById('homeworkForm').reset();
+            loadHomework();
+        });
+
+        function loadHomework() {
+            const currentUser = localStorage.getItem('currentUser');
+            const homeworkItems = JSON.parse(localStorage.getItem(`homework_${currentUser}`) || '[]');
+            const homeworkList = document.getElementById('homeworkList');
+            homeworkList.innerHTML = ''; // Clear existing items
+
+            homeworkItems.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate)); // Sort by due date
+
+            homeworkItems.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.classList.add('homework-item');
+                if (item.completed) {
+                    itemDiv.classList.add('completed');
+                }
+                itemDiv.innerHTML = `
+                    <div class="homework-subject">${item.subject}</div>
+                    <div class="homework-task">${item.task.replace(/\n/g, '<br>')}</div>
+                    <div class="homework-due-date">Due: ${new Date(item.dueDate).toLocaleDateString()}</div>
+                    <div class="homework-actions">
+                        <button class="action-btn" onclick="toggleHomeworkStatus(${item.id})">
+                            ${item.completed ? 'Mark as Incomplete' : 'Mark as Complete'}
+                        </button>
+                        <button class="action-btn" style="background: #dc3545;" onclick="deleteHomeworkItem(${item.id})">Delete</button>
+                    </div>
+                `;
+                homeworkList.appendChild(itemDiv);
+            });
+        }
+
+        function toggleHomeworkStatus(itemId) {
+            const currentUser = localStorage.getItem('currentUser');
+            let homeworkItems = JSON.parse(localStorage.getItem(`homework_${currentUser}`) || '[]');
+            const itemIndex = homeworkItems.findIndex(item => item.id === itemId);
+            if (itemIndex > -1) {
+                homeworkItems[itemIndex].completed = !homeworkItems[itemIndex].completed;
+                localStorage.setItem(`homework_${currentUser}`, JSON.stringify(homeworkItems));
+                loadHomework();
+            }
+        }
+
+        function deleteHomeworkItem(itemId) {
+            const currentUser = localStorage.getItem('currentUser');
+            let homeworkItems = JSON.parse(localStorage.getItem(`homework_${currentUser}`) || '[]');
+            homeworkItems = homeworkItems.filter(item => item.id !== itemId);
+            localStorage.setItem(`homework_${currentUser}`, JSON.stringify(homeworkItems));
+            loadHomework();
+        }
+
+
+        // Profile Functions
+        function loadProfile() {
+            const currentUserEmail = localStorage.getItem('currentUser');
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.email === currentUserEmail);
+
+            if (user) {
+                document.getElementById('profileName').textContent = user.name;
+                document.getElementById('profileEmail').textContent = user.email;
+                document.getElementById('editName').value = user.name;
+                document.getElementById('editEmail').value = user.email; // Usually email is not editable, but for simplicity
+            }
+        }
+
+        function toggleEditProfile() {
+            const editForm = document.getElementById('editProfileForm');
+            editForm.style.display = editForm.style.display === 'none' ? 'block' : 'none';
+        }
+
+        document.getElementById('editProfileForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newName = document.getElementById('editName').value;
+            const newEmail = document.getElementById('editEmail').value; // Be cautious with email changes
+            const currentUserEmail = localStorage.getItem('currentUser');
+            let users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            // Check if new email already exists (if different from current)
+            if (newEmail !== currentUserEmail && users.some(u => u.email === newEmail)) {
+                alert('This email is already taken by another account.');
+                return;
+            }
+
+            const userIndex = users.findIndex(u => u.email === currentUserEmail);
+            if (userIndex > -1) {
+                users[userIndex].name = newName;
+                users[userIndex].email = newEmail; // Update email
+                localStorage.setItem('users', JSON.stringify(users));
+                localStorage.setItem('currentUser', newEmail); // Update current user session key if email changed
+                loadProfile();
+                toggleEditProfile(); // Hide form after saving
+                alert('Profile updated successfully!');
+            }
+        });
+
+        // Logout
+        function logout() {
+            localStorage.removeItem('currentUser');
+            document.getElementById('mainSection').style.display = 'none';
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+        }
+
+    </script>
+</body>
+</html>
